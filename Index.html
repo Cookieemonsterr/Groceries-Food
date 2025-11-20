@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>I LOVE YOU MARRAR</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #2b2d42, #000);
+      color: #fff;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .center-message {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      max-width: 90%;
+      pointer-events: none;
+    }
+
+    .center-message h1 {
+      font-size: 3rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .center-message p {
+      opacity: 0.8;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      right: -360px;
+      width: 320px;
+      height: 100vh;
+      background: linear-gradient(135deg, #ff8fb1, #ff66a3);
+      box-shadow: -5px 0 25px rgba(0, 0, 0, 0.4);
+      padding: 2.5rem 1.5rem;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: right 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+
+    .sidebar.show {
+      right: 0;
+    }
+
+    .sidebar h2 {
+      font-size: 2.2rem;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .heart-big {
+      font-size: 3.5rem;
+      animation: pulse 1.2s infinite alternate;
+    }
+
+    @keyframes pulse {
+      from {
+        transform: scale(1);
+        filter: drop-shadow(0 0 0px rgba(255, 255, 255, 0.5));
+      }
+      to {
+        transform: scale(1.15);
+        filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.8));
+      }
+    }
+
+    /* Falling hearts */
+    .heart {
+      position: fixed;
+      top: -40px;
+      font-size: 24px;
+      animation-name: fall;
+      animation-timing-function: linear;
+      pointer-events: none;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-40px) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    .hint {
+      position: fixed;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.9rem;
+      opacity: 0.7;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="center-message">
+    <h1>Tap anywhere 👆</h1>
+    <p>Special message for Marrar inside 💖</p>
+  </div>
+
+  <div class="sidebar" id="loveSidebar">
+    <h2>بحبك<br />مرار ❤️</h2>
+    <div class="heart-big">💗</div>
+  </div>
+
+  <div class="hint">Click anywhere to reveal the surprise</div>
+
+  <script>
+    const sidebar = document.getElementById("loveSidebar");
+    let activated = false;
+
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.textContent = "💖";
+
+      const size = 16 + Math.random() * 24; // 16–40px
+      const left = Math.random() * 100; // vw
+      const duration = 4 + Math.random() * 3; // 4–7s
+
+      heart.style.left = left + "vw";
+      heart.style.fontSize = size + "px";
+      heart.style.animationDuration = duration + "s";
+
+      document.body.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, duration * 1000 + 1000);
+    }
+
+    function startHeartRain() {
+      // Burst
+      for (let i = 0; i < 25; i++) {
+        setTimeout(createHeart, i * 80);
+      }
+      // Continuous drizzle
+      setInterval(createHeart, 500);
+    }
+
+    document.addEventListener("click", () => {
+      if (!activated) {
+        activated = true;
+        sidebar.classList.add("show");
+        startHeartRain();
+      } else {
+        // If he clicks again, just make more hearts for fun
+        for (let i = 0; i < 10; i++) {
+          setTimeout(createHeart, i * 60);
+        }
+      }
+    });
+  </script>
+</body>
+</html>
